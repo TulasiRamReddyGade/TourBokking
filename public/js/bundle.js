@@ -4757,21 +4757,22 @@ var updateData = /*#__PURE__*/function () {
             _context.next = 4;
             return (0, _axios.default)({
               method: 'PATCH',
-              url: type === 'data' ? 'http://127.0.0.1:8080/api/v1/users/updateMe' : 'http://127.0.0.1:8080api/v1/users/updateMyPassword',
+              url: type === 'data' ? 'http://127.0.0.1:8080/api/v1/users/updateMe' : 'http://127.0.0.1:8080/api/v1/users/updateMyPassword',
               data: data
             });
 
           case 4:
             (0, _alert.showAlert)('success', 'Data updated successfully');
-            _context.next = 10;
+            _context.next = 11;
             break;
 
           case 7:
             _context.prev = 7;
             _context.t0 = _context["catch"](0);
+            console.log(_context.t0);
             (0, _alert.showAlert)('error', _context.t0.response.data.message || 'Something went wrong');
 
-          case 10:
+          case 11:
           case "end":
             return _context.stop();
         }
@@ -4822,13 +4823,14 @@ if (logoutButton) logoutButton.addEventListener('click', _login.logout);
 if (saveSettings) {
   // console.log(saveSettings);
   saveSettings.addEventListener('submit', function (e) {
-    e.preventDefault();
-    var email = document.getElementById('email').value;
-    var name = document.getElementById('name').value;
-    (0, _updateSettings.updateData)({
-      email: email,
-      name: name
-    }, 'data');
+    e.preventDefault(); // const email = document.getElementById('email').value;
+    // const name = document.getElementById('name').value;
+
+    var form = new FormData();
+    form.append('name', document.getElementById('name').value);
+    form.append('email', document.getElementById('email').value);
+    form.append('photo', document.getElementById('photo').files[0]);
+    (0, _updateSettings.updateData)(form, 'data');
   });
 }
 
@@ -4837,7 +4839,8 @@ if (passwordChange) {
     e.preventDefault();
     var passwordCurrent = document.getElementById('password-current').value;
     var password = document.getElementById('password').value;
-    var passwordConfirm = document.getElementById('password-confirm').value;
+    var passwordConfirm = document.getElementById('password-confirm').value; // console.log(password, passwordConfirm);
+
     (0, _updateSettings.updateData)({
       passwordCurrent: passwordCurrent,
       password: password,
@@ -4873,7 +4876,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "45215" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "42853" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

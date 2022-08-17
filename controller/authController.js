@@ -1,9 +1,11 @@
+/* eslint-disable prefer-destructuring */
+/* eslint-disable no-new */
 /* eslint-disable node/no-unsupported-features/es-syntax */
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const catchAsync = require('../utils/catchAsync');
 const User = require('./../model/userModel');
-const email = require('./../utils/email');
+const Email = require('./../utils/email');
 const AppError = require('../utils/appError');
 
 const cookieOptions = {
@@ -54,6 +56,10 @@ exports.signUp = catchAsync(async (req, res) => {
         password: req.body.password,
         passwordConfirm: req.body.passwordConfirm
     });
+    await new Email(
+        newUser,
+        `${req.protocol}://${req.get('host')}/me`
+    ).sendWelcome();
     createSendToken(newUser, 201, res);
 });
 
@@ -163,13 +169,9 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
 
     // console.log(resetUrl);
 
-    const message = `Forgot your password? send a patch request to ${resetUrl} with password and password confirm.\n If you didn't forgot your password please ignore this email`;
+    // const message = `Forgot your password? send a patch request to ${resetUrl} with password and password confirm.\n If you didn't forgot your password please ignore this email`;
     try {
-        await email({
-            email: 'user@gmail.com',
-            subject: 'Your password reset token valid for 10min',
-            message
-        });
+        await new Email(user, resetUrl).passwordResetToken();
     } catch (err) {
         user.passwordResetToken = undefined;
         user.passwordResetExpires = undefined;

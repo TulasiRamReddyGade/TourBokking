@@ -5,6 +5,7 @@ import axios from 'axios';
 import { showAlert } from './alert';
 
 export const updateData = async (data, type) => {
+    // console.log(data);
     try {
         console.log(data);
         await axios({
@@ -12,11 +13,12 @@ export const updateData = async (data, type) => {
             url:
                 type === 'data'
                     ? 'http://127.0.0.1:8080/api/v1/users/updateMe'
-                    : 'http://127.0.0.1:8080api/v1/users/updateMyPassword',
+                    : 'http://127.0.0.1:8080/api/v1/users/updateMyPassword',
             data
         });
         showAlert('success', 'Data updated successfully');
     } catch (err) {
+        console.log(err);
         showAlert('error', err.response.data.message || 'Something went wrong');
     }
 };

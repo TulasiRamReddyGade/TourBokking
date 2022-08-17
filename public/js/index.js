@@ -33,9 +33,13 @@ if (saveSettings) {
     // console.log(saveSettings);
     saveSettings.addEventListener('submit', e => {
         e.preventDefault();
-        const email = document.getElementById('email').value;
-        const name = document.getElementById('name').value;
-        updateData({ email, name }, 'data');
+        // const email = document.getElementById('email').value;
+        // const name = document.getElementById('name').value;
+        const form = new FormData();
+        form.append('name', document.getElementById('name').value);
+        form.append('email', document.getElementById('email').value);
+        form.append('photo', document.getElementById('photo').files[0]);
+        updateData(form, 'data');
     });
 }
 if (passwordChange) {
@@ -46,6 +50,7 @@ if (passwordChange) {
         const password = document.getElementById('password').value;
         const passwordConfirm = document.getElementById('password-confirm')
             .value;
+        // console.log(password, passwordConfirm);
         updateData({ passwordCurrent, password, passwordConfirm }, 'password');
     });
 }

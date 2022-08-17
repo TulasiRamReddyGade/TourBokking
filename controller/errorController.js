@@ -76,9 +76,9 @@ module.exports = (err, req, res, next) => {
     err.status = err.status || 'error';
     if (process.env.NODE_ENV === 'production') {
         let error = Object.assign(err);
-        console.log(error.name);
+        // console.log(error.name);
         if (error.name === 'CastError') error = handleCastErrorDB(error);
-        if (error.code == 11000) error = handleDuplicateError(error);
+        if (error.code === 11000) error = handleDuplicateError(error);
         if (error.name === 'ValidationError')
             error = handleValidationErrorDB(error);
         if (error.name === 'JsonWebTokenError')
